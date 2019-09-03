@@ -1,6 +1,6 @@
 <?php
 
-require_once './Persona.php';
+// require_once './Persona.php';
 
 class Alumno extends Persona{
 
@@ -24,8 +24,9 @@ class Alumno extends Persona{
         return $this->cuatrimestre;
     }    
 
-    public function Mostrar();
+    public function Mostrar()
     {        
+        
         echo "legajo: $this->legajo || cuatrimestre: $this->cuatrimestre";
     }
 }

@@ -9,8 +9,6 @@ class Facultad
     private $nombre;
     private $listaAlumnos;
    
-
-
     //Constructores
     function __construct($nom)
     {
@@ -146,10 +144,19 @@ class Facultad
         }
         else
         {// Ya existe el Alumno, incrementar la cantidad
-            echo "<font size='3' color='red'  face='verdana' style='font-weight:bold' <br>Este Alumno ya se Encuentra en  Facultad, Se incrementa la cantidad <br> </font>";
-            $Alumno->setCantidad($Alumno->getCantidad()+$cantidad);
+            echo "<font size='3' color='red'  face='verdana' style='font-weight:bold' <br>Este Alumno ya se Encuentra en  Facultad<br> </font>";     
         }
         self::guardarJsonFacultad($lista, "$PATH_ARCHIVOS/Alumnos.txt", "Alumno");
+    }
+
+    public static function MostrarAlumnos()
+    {
+        global $PATH_ARCHIVOS;
+        $lista = self::LeerJSON("$PATH_ARCHIVOS/Alumnos.txt", "Alumno");
+        foreach($lista as $objeto)
+        {
+            $objeto->Mostrar();
+        }
     }
 }    
 ?>

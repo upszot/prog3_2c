@@ -26,5 +26,10 @@ class Persona{
     {
         $this->dni= $dni;
     }    
+
+    public function Mostrar()
+    {        
+        echo "nombre: $this->nombre || dni: $this->dni";
+    }
 } 
 ?>
