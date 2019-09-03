@@ -155,7 +155,7 @@ class Facultad
         $lista = self::LeerJSON("$PATH_ARCHIVOS/Alumnos.txt", "Alumno");
         foreach($lista as $objeto)
         {
-            $objeto->Mostrar();
+            //$objeto->Mostrar();
             echo  $objeto->toString() . "</br>";
         }
     }
