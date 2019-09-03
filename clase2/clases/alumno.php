@@ -26,8 +26,16 @@ class Alumno extends Persona{
 
     public function Mostrar()
     {        
-        
-        echo "legajo: $this->legajo || cuatrimestre: $this->cuatrimestre";
+        // $this->mostrar();
+        parent::Mostrar();
+        echo " legajo: $this->legajo || cuatrimestre: $this->cuatrimestre";
+    }
+
+    public function toString()
+    {        
+        // $this->mostrar();
+        // parent::toString();
+        return parent::toString() ." legajo: $this->legajo || cuatrimestre: $this->cuatrimestre";
     }
 }
 ?>

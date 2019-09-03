@@ -29,7 +29,13 @@ class Persona{
 
     public function Mostrar()
     {        
-        echo "nombre: $this->nombre || dni: $this->dni";
+        echo " nombre: $this->nombre || dni: $this->dni ";
     }
+
+    public function toString()
+    {        
+        return " nombre: $this->nombre || dni: $this->dni ";
+    }
+
 } 
 ?>

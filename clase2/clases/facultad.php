@@ -156,6 +156,7 @@ class Facultad
         foreach($lista as $objeto)
         {
             $objeto->Mostrar();
+            echo  $objeto->toString() . "</br>";
         }
     }
 }    
