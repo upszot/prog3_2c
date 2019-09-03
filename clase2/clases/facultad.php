@@ -65,7 +65,8 @@ class Facultad
                 case 'Alumno':
                     if (!($key->getlegajo() == '' || $key->getlegajo() == '\n')) 
                     {
-                        $array = array($key);
+
+                        $array = array(get_object_vars($key));
                         // $array = array('legajo' => $key->getlegajo(), 'sabor' => $key->getSabor(), 'tipo' => $key->getTipo(), 'cantidad' => $key->getCantidad() , 'precio' => $key->getPrecio());
                         array_push($listado, $array);
                         fputs($archivo,  json_encode($array) . PHP_EOL);
