@@ -1,0 +1,1 @@
+{"nombre":"pepe","dni":"123456","legajo":"1","cuatrimestre":"2","Nomfoto":"SIN_FOTO"}
