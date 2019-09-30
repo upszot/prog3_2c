@@ -1,0 +1,1 @@
+[{"nombre":"prog3","codigo":"001","cupo":"30","aula":"lab3"},{"nombre":"prog4","codigo":"002","cupo":20,"aula":"lab3"},{"nombre":"legislacion","codigo":"003","cupo":9,"aula":"alula1"}]
