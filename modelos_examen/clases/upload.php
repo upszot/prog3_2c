@@ -21,7 +21,7 @@ class Upload
 		if (file_exists($destino)) {
 			$uploadOk = ManejadorDeArchivos::moverArchivoBackup($nombreArchivo["name"], $nombre, $destino);
 		}
-		//VERIFICO EL TAMA�O MAXIMO QUE PERMITO SUBIR
+		//VERIFICO EL TAMAÑO MAXIMO QUE PERMITO SUBIR
 		if ($nombreArchivo["size"] > 5000000) {
 			echo "El archivo es demasiado grande. Verifique!!!";
 			$uploadOk = FALSE;

@@ -131,8 +131,7 @@ class Facultad {
             {
                 echo "<br> Muestro Listado de Inscripciones Filtrada por Materia<br>";
                 $listaMostrar=self::SubListaXCriterio($lista, "materia", $materia,FALSE);
-            }
-            
+            }            
         }
         
         foreach ($listaMostrar as $objeto)
@@ -141,8 +140,36 @@ class Facultad {
         }               
     }
     
+    //PUNTO - 7
+    static public function modificarAlumno( $nombre, $apellido, $email,  $foto)
+    {
+        echo "<br>Entro en modificarAlumno con datos: $nombre, $apellido, $email </br>";
+        $lista = self::LeerJSON(PATH_ARCHIVOS ."/Alumno.txt", "Alumno");        
+        //$Alumno=self::ExisteAlumno($lista, $email); //no la uso mas... tengo la de abajo que es generica
+        $Alumno=self::BuscaXCriterio($lista, "email", $email);
+        
+        if($Alumno==null)
+        {
+            echo "<br>El Alumno NO existe, no se puede modificar<br>";
+        }
+        else
+        {      
+            echo "<br>Modifica Alumno<br>";             
+            $nomFoto = "SIN_FOTO"; 
+            if ($foto != null) {                
+                $nomFoto="foto_".$email;
+                Upload::cargarImagenPorNombre($foto, $nomFoto, "./fotosAlumno/");
+            }
+            
+            //modificado con seters magicos XD
+            $Alumno->nombre=$nombre;
+            $Alumno->apellido=$apellido;
+            $Alumno->nomFoto=$nomFoto;
+            
+            self::guardarJSON($lista, PATH_ARCHIVOS ."/Alumno.txt", "Alumno");
+        }
+    }
 
-    
     //**********  OTRAS FUNCIONES ***********/
 
     /**Funcion de Busqueda Generica en listado
