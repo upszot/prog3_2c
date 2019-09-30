@@ -21,7 +21,7 @@ class ManejadorDeArchivos
 		$arrayDeDatos = explode('.', $archivoOriginal); //agarramos el archivo original y lo desarmamos
 		$nuevoDestino = "./backup/" . $nuevoArchivo.date("Ymd_hms").".$arrayDeDatos[1]"; //hacemos un nuevo destino url con el nuevo nombre de archivo y la extension del original
 		
-		echo "NUEVO DESTINO $nuevoDestino";
+		//echo "NUEVO DESTINO $nuevoDestino";
 		copy($destino, $nuevoDestino ); //movemos ese archivo al nuevo destino
 
 		$destino ="./archivos/".$nuevoArchivo.".$arrayDeDatos[1]";

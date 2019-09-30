@@ -56,8 +56,9 @@ class Upload
 			//MUEVO EL ARCHIVO DEL TEMPORAL AL DESTINO FINAL
 			if (move_uploaded_file($nombreArchivo["tmp_name"], $destino))
 			{
-				ManejadorDeArchivos::agregarMarcaDeAgua($destino, "./firma.png");
-				echo "<br/><h1>El archivo " . basename($nombreArchivo) . " ha sido subido exitosamente.</h1>";
+				ManejadorDeArchivos::agregarMarcaDeAgua($destino, "./firma.png");				
+				//echo "<br/><h1>El archivo " . basename( $nombreArchivo["name"]) . " ha sido subido exitosamente.</h1>";
+				echo "<br> Se subio exitosamente el archivo</br>";
 			} 
 			else {
 				echo "<br/>Lamentablemente ocurri&oacute; un error y no se pudo subir el archivo.";
@@ -65,3 +66,4 @@ class Upload
 		}
 	}
 }
+?>

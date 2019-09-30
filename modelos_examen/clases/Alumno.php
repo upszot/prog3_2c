@@ -23,6 +23,8 @@ class Alumno {
 
 // ------- Getters && Setters Magicos ------------------- 
 // de esta forma me ahorro de hacer todos los getters y setters a mano
+// Todavia no lo uso pq me genero unos lios... 
+
     public function __get($property){
         if(property_exists($this, $property)) {
             return $this->$property;
@@ -32,8 +34,10 @@ class Alumno {
     public function __set($propiedad, $valor){
         $this->propiedad = $valor;
     }
+
+
     // ----------------------------------------------- 
-/*
+
     //GETTER && SETTERS
     public function getnombre()
     {
@@ -71,7 +75,7 @@ class Alumno {
         $this->nomFoto=$var;
     }
 
-    */
+    
     //funciones
     public function Mostrar()
     {

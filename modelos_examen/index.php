@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -32,30 +32,55 @@
         case "GET":
              switch (key($_GET)) 
              {
-                case 'cargarAlumno':
-                    echo '<br>(index) Cargar Alumno<br>';
+                case 'consultarAlumno':
+                    echo '<br>(index) consultarAlumno<br>';
                     
                     break;
+                case 'inscribirAlumno':
+                echo '<br>(index) inscribirAlumno<br>';
+                    break;
+                
+                case 'inscripciones':
+                    echo '<br>(index) inscripciones <br>';
+                    //con filtro y sin filtro
                     
+                    break;
+                case 'alumnos':
+                    echo '<br>(index) alumnos <br>';              
+                
+                    break;
+                
              }
              break;
         case "POST":
             switch (key($_POST)) 
             {
+               
                 case 'cargarAlumno':
 
+                    echo '<br>(index) Cargar Alumno (con foto)<br>';
+                    require_once 'manejadores/CargaAlumno.php';
 
-                    if (isset($_FILES["foto"])) 
-                    {
-                        echo '<br>(index) Cargar Alumno (con foto)<br>';
-                        require_once 'manejadores/CargaAlumno.php';
-                    }
-                    else
-                    {
-                        echo '<br>(index) Cargar Alumno <br>';
-                    }
+                    //Esto si pide Carga Alumno con o sin foto
+                    // if (isset($_FILES["foto"])) 
+                    // {
+                    //     echo '<br>(index) Cargar Alumno (con foto)<br>';
+                    //     require_once 'manejadores/CargaAlumno.php';
+                    // }
+                    // else
+                    // {
+                    //     echo '<br>(index) Cargar Alumno (Sin foto)<br>';
+                    // }
                     break;
-                                  
+                case 'cargarMateria':
+                    echo '<br>(index) cargarMateria<br>';
+                    
+                    break;
+
+                case 'modificarAlumno':
+                    echo '<br>(index) modificarAlumno<br>';
+                
+                    break;
             }// FIN switch (key($_POST))             
             break;
 

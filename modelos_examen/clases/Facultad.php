@@ -1,5 +1,7 @@
 
 <?php
+    require_once './clases/Alumno.php';
+    require_once './clases/Materias.php';
     require_once './clases/upload.php';
 
 class Facultad {
@@ -7,37 +9,57 @@ class Facultad {
     
     static public function AltaAlumno( $nombre, $apellido, $email,  $foto)
     {
-        echo "entro";        
-
-        $lista = self::LeerJSON(PATH_ARCHIVOS ."/Alumno.txt", "Alumno");
-        $Alumno=self::ExisteAlumno($lista, $apellido);
-
+     //   echo "<br>Entro en alta alumno con datos: $nombre, $apellido, $email </br>";
+        $lista = self::LeerJSON(PATH_ARCHIVOS ."/Alumno.txt", "Alumno");        
+        //$Alumno=self::ExisteAlumno($lista, $email);
+        $Alumno=self::BuscaXCriterio($lista, "email", $email);
+        
         if($Alumno!=null)
         {
             echo "<br>El Alumno ya existe<br>";
         }
         else
-        {         
+        {      
+            //echo "<br>Nuevo Alumno<br>";             
             $nomFoto = "SIN_FOTO"; 
             if ($foto != null) {                
                 $nomFoto="foto_".$email;
                 Upload::cargarImagenPorNombre($foto, $nomFoto, "./fotosAlumno/");
             }
-
-            $Alumno=new Alumno($nombre, $apellido, $email,   $nomFoto);
-            array_push($lista, $Alumno);
+            
+            $Alumno=new Alumno($nombre, $apellido, $email, $nomFoto);            
             self::guardarJSON($lista, PATH_ARCHIVOS ."/Alumno.txt", "Alumno");
         }
     }
 
 
-    public static function existeAlumno($lista, $apellido)
+    /**Funcion de Busqueda Generica en listado
+     * Usa los metodos magicos __get para buscar por atributo del objeto
+     * criterio= atributo del objeto
+     * dato = dato a buscar en dicho atributo
+     * 
+     * Si encuentra devuelve el objeto, si no devuelve null
+     */
+    public static function BuscaXCriterio($lista, $criterio, $dato)
     {
         $retorno=null;
         foreach ($lista as $objeto) {
-            // if ( $objeto->getapellido() == $apellido) 
-            if ( $objeto->get("alumno") == $apellido) 
-            {                
+            if ( $objeto->$criterio == $dato) 
+            {          
+                $retorno= $objeto;
+                break;
+            }
+        }
+        return $retorno;
+    }
+
+    public static function existeAlumno($lista, $email)
+    {
+        $retorno=null;
+        foreach ($lista as $objeto) {
+            // if ( $objeto->getapellido() == $apellido)
+            if ( $objeto->email == $email) 
+            {          
                 $retorno= $objeto;
                 break;
             }
@@ -56,8 +78,9 @@ class Facultad {
             $listado = array();
             while (!feof($archivo)) {
                 $renglon = fgets($archivo);
-                if ($renglon != "") {
-                    $objeto = json_decode($renglon);
+                if ($renglon != "") 
+                {
+                    $objeto = json_decode($renglon);                            
                     switch ($tipo) {
                             /* 
                         case 'Materias':
@@ -66,6 +89,7 @@ class Facultad {
                             break;
                         */
                         case 'Alumno':
+                            //$Alumno = new Alumno($objeto->get("nombre") ,$objeto->get("apellido") , $objeto->get("email") ,$objeto->get("nomFoto") );
                             $Alumno = new Alumno($objeto->nombre ,$objeto->apellido, $objeto->email , $objeto->nomFoto);
                             array_push($listado, $Alumno);             
                             break;                            
@@ -83,12 +107,11 @@ class Facultad {
 
 
     
-    public static function guardarJSON($lista, $nombreArchivo, $tipo) 
+    public static function guardarJSON($listado, $nombreArchivo, $tipo) 
     {
-        $listado = $lista;
         $archivo = fopen($nombreArchivo, "w");
 
-        foreach($listado as $key) 
+        foreach($listado as $objeto) 
         {
             switch ($tipo) 
             {
@@ -100,11 +123,11 @@ class Facultad {
                         fputs($archivo,  json_encode($array) . PHP_EOL);
                     }
                     break;
-                case 'Alumno':
-                        $array = array('nombre' => $key->getnombre(), 'apellido' => $key->getapellido(),'email' => $key->getemail(),'nomFoto' => $key->getnomFoto() );
+                case 'Alumno':                        
+                        //$array = array('nombre' => $key->get("nombre"), 'apellido' => $key->get("apellido"),'email' => $key->get("email"),'nomFoto' => $key->get("nomFoto") );                        
+                        $array = array('nombre' => $objeto->nombre, 'apellido' => $objeto->apellido,'email' => $objeto->email,'nomFoto' => $objeto->nomFoto );
                         array_push($listado, $array);
-                        fputs($archivo,  json_encode($array) . PHP_EOL);
-                    
+                        fputs($archivo,  json_encode($array) . PHP_EOL);                    
                     break;                    
             }
         }

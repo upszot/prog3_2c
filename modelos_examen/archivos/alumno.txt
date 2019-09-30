@@ -1,1 +1,3 @@
 {"nombre":"pepe","apellido":"perez2","email":"lala@lala.com","nomFoto":"foto_lala@lala.com"}
+{"nombre":"juan","apellido":"perez","email":"juanPerez@lala.com","nomFoto":"foto_juanPerez@lala.com"}
+{"nombre":"333","apellido":"perez","email":"33z@lala.com","nomFoto":"foto_33z@lala.com"}
