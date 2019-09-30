@@ -210,7 +210,19 @@ class Facultad {
         foreach($lista as $objeto){
             $strHtml.= "<tr>";
             foreach ($listaHead as $propertyName) {
-                $strHtml.="<td>".$objeto->{$propertyName}."</td>";     
+                if($propertyName=='nomFoto')
+                {//OJO esto adaptarlo segun el nombre del campo donde se guarda el nombre de las imagenes
+
+                    if($objeto->{$propertyName}!="SIN_FOTO")
+                    {
+                        $img="./fotos".$tipo."/".$objeto->{$propertyName}.".png";
+                        $strHtml.= "<td><img src=" . $img . " alt=" . " border=3 height=30% width=30%></img></td>";                        
+                    }
+
+                }else
+                {
+                    $strHtml.="<td>".$objeto->{$propertyName}."</td>";
+                }
             }
             $strHtml.= "</tr>";
         }
@@ -218,6 +230,20 @@ class Facultad {
         $strHtml.= "</tbody>";
         return $strHtml;        
     }
+
+
+/*
+
+    if($objeto->getNomfotoHelado()!="SIN_FOTO")
+    {
+        $img="./fotosVentas/".$objeto->getNomfotoHelado().".png";
+        $strHtml.= "<td><img src=" . $img . " alt=" . " border=3 height=30% width=30%></img></td>";
+    }
+    else
+    {// Buscar imagen que diga No Disponible
+        $strHtml.= "<td>".$objeto->getNomfotoHelado()."</td>";
+    }
+*/
 
     /**Funcion de Busqueda Generica en listado
      * Usa los metodos magicos __get para buscar por atributo del objeto
@@ -251,13 +277,13 @@ class Facultad {
         $retorno=null;        
         $sublista=array();
         
-        /*  
+        /*   */
         if(!$caseSensitive)
         {//Si esta en FALSE paso Todo a minisculas (Array y dato)
             $lista = array_map('strtolower', $lista);  //Esta Mierda no me esta andando aca...
             $dato=strtolower($dato);
         }        
-        */
+        
         //self::debugAlgo($lista);        
         foreach ($lista as $objeto) 
         {            
