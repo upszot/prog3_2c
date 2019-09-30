@@ -1,5 +1,3 @@
-
-
 <?php
 
 /*
@@ -9,7 +7,7 @@ el aula donde se dicta y se guardan los datos en el archivo materias.txt, tomand
 la materia
 */
 
-class Materias {
+class Materia {
 
     private $nombre; 
     private $codigo; 
@@ -24,6 +22,23 @@ class Materias {
         $this->aula= $aula;        
     }
 
+    //GETTER && SETTERS
+    public function __get($property)
+    {
+        if(property_exists($this, $property)) {
+            return $this->$property;
+        }
+    }
 
+    public function __set($propiedad, $valor)
+    {
+        $this->propiedad = $valor;
+    }
+
+    //---- Funciones ---
+    public function __toString()
+    {
+        return "nombre: $this->nombre || codigo: $this->codigo || cupo: $this->cupo || aula: $this->aula </br>";
+    }
 }
 ?>

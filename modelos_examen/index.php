@@ -14,7 +14,7 @@
     <?php
     require_once './clases/Alumno.php';
     require_once './clases/Facultad.php';
-    require_once './clases/Materias.php';
+    require_once './clases/Materia.php';
 
     #require_once './clases/Generales.php';
 //    $PATH_ARCHIVOS = './archivos';
@@ -34,7 +34,7 @@
              {
                 case 'consultarAlumno':
                     echo '<br>(index) consultarAlumno<br>';
-                    
+                    require_once 'manejadores/consultarAlumno.php';
                     break;
                 case 'inscribirAlumno':
                 echo '<br>(index) inscribirAlumno<br>';
@@ -74,7 +74,7 @@
                     break;
                 case 'cargarMateria':
                     echo '<br>(index) cargarMateria<br>';
-                    
+                    require_once 'manejadores/cargarMateria.php';
                     break;
 
                 case 'modificarAlumno':

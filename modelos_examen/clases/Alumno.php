@@ -37,6 +37,7 @@ class Alumno {
 
 
     // ----------------------------------------------- 
+/* ya no los necesito... uso los gets y set magicos... 
 
     //GETTER && SETTERS
     public function getnombre()
@@ -74,12 +75,12 @@ class Alumno {
     {
         $this->nomFoto=$var;
     }
-
+*/
     
     //funciones
-    public function Mostrar()
+    public function __toString()
     {
-        echo "nombre: $this->nombre || apellido: $this->apellido || email: $this->email ";
+        return "nombre: $this->nombre || apellido: $this->apellido || email: $this->email </br>";
     }
 
     public  function toArray()

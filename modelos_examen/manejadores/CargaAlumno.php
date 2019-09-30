@@ -9,8 +9,6 @@ echo "<font size='3' color='blue'  face='verdana' style='font-weight:bold' <br>A
 if (isset($_POST["nombre"]) && isset($_POST["apellido"]) && isset($_POST["email"]) && isset($_FILES["foto"])  ) 
 {
     Facultad::AltaAlumno($_POST["nombre"], $_POST["apellido"],  $_POST["email"], $_FILES["foto"]);
-
-
 }
 else
 {
