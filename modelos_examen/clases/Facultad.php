@@ -4,6 +4,7 @@
     require_once './clases/Materia.php';
     require_once './clases/Inscripciones.php';
     require_once './clases/upload.php';
+    
 
 class Facultad {
     
@@ -11,8 +12,7 @@ class Facultad {
     static public function AltaAlumno( $nombre, $apellido, $email,  $foto)
     {
      //   echo "<br>Entro en alta alumno con datos: $nombre, $apellido, $email </br>";
-        $lista = self::LeerJSON(PATH_ARCHIVOS ."/Alumno.txt", "Alumno");        
-        //$Alumno=self::ExisteAlumno($lista, $email); //no la uso mas... tengo la de abajo que es generica
+        $lista = Alumno::leerFromJSON(PATH_ARCHIVOS ."/Alumno.txt");        
         $Alumno=self::BuscaXCriterio($lista, "email", $email);
         
         if($Alumno!=null)
@@ -30,15 +30,16 @@ class Facultad {
             
             $Alumno=new Alumno($nombre, $apellido, $email, $nomFoto);
             array_push($lista, $Alumno);
-            self::guardarJSON($lista, PATH_ARCHIVOS ."/Alumno.txt", "Alumno");
+
+            self::guardarJSON($lista, PATH_ARCHIVOS ."/Alumno.txt");
         }
     }
     
     //PUNTO - 2    
     static public function consultarAlumno($apellido)
     {
-        //echo "<br>Entro en consultarAlumno con datos:  $apellido </br>";
-        $lista = self::LeerJSON(PATH_ARCHIVOS ."/Alumno.txt", "Alumno");        
+        //echo "<br>Entro en consultarAlumno con datos:  $apellido </br>";        
+        $lista = Alumno::leerFromJSON(PATH_ARCHIVOS ."/Alumno.txt");
         $listaFiltrada=self::SubListaXCriterio($lista, "apellido", $apellido,FALSE);        
         
         if($listaFiltrada==null)
@@ -50,7 +51,7 @@ class Facultad {
             echo "<br> Muestro Listado de Alumnos<br>";
             foreach ($listaFiltrada as $objeto)
             {
-                //$objeto->Mostrar();
+                //metodo Magico toString() XD
                 echo $objeto;
             }            
         }
@@ -60,8 +61,9 @@ class Facultad {
     //PUNTO - 3
     static public function cargarMateria( $nombre, $codigo, $cupo,  $aula)
     {
-        //echo "<br>Entro en cargarMateria con datos:  $nombre, $codigo, $cupo, $aula </br>";
-        $lista = self::LeerJSON(PATH_ARCHIVOS ."/Materia.txt", "Materia");          
+        //echo "<br>Entro en cargarMateria con datos:  $nombre, $codigo, $cupo, $aula </br>";        
+        $lista = Materia::leerFromJSON(PATH_ARCHIVOS ."/Materia.txt");
+
         $objeto=self::BuscaXCriterio($lista, "codigo", $codigo);
         
         if($objeto!=null)
@@ -73,15 +75,15 @@ class Facultad {
             //echo "<br>Nueva Materia<br>";
             $Materia=new Materia($nombre, $codigo, $cupo, $aula);
             array_push($lista, $Materia);
-            self::guardarJSON($lista, PATH_ARCHIVOS ."/Materia.txt", "Materia");
+            self::guardarJSON($lista, PATH_ARCHIVOS ."/Materia.txt");
         }
     }
     
     //PUNTO - 4
     static public function inscribirAlumno($nombre,$apellido,$email,$materia,$codigo)
     {
-        //echo "<br>Entro en inscribirAlumno con datos:  $nombre,$apellido,$email,$materia,$codigo </br>";
-        $listaMaterias = self::LeerJSON(PATH_ARCHIVOS ."/Materia.txt", "Materia");
+        echo "<br>Entro en inscribirAlumno con datos:  $nombre,$apellido,$email,$materia,$codigo </br>";        
+        $listaMaterias = Materia::leerFromJSON(PATH_ARCHIVOS ."/Materia.txt");
         $objeto=self::BuscaXCriterio($listaMaterias, "codigo", $codigo);
         
         if($objeto==null)
@@ -97,7 +99,9 @@ class Facultad {
             else
             {
                 //echo "<br>Nueva Inscripcion <br>";
-                $listaInscripciones = self::LeerJSON(PATH_ARCHIVOS ."/Inscripciones.txt", "Inscripciones");
+                $listaInscripciones = Inscripciones::leerFromJSON(PATH_ARCHIVOS ."/Inscripciones.txt");
+                //$listaInscripciones = self::LeerJSON(PATH_ARCHIVOS ."/Inscripciones.txt", "Inscripciones");
+
                 //No valido datos: por ejemplo $objeto->nombre == $materia ... (no lo pidieron...)
                 $Inscrpcion=new Inscripciones($nombre,$apellido,$email,$codigo,$materia);
                 array_push($listaInscripciones, $Inscrpcion);
@@ -105,8 +109,8 @@ class Facultad {
                 //Resto en 1 el cupo, con __set (metodo magico)= __get (metodo magico) -1
                  $objeto->cupo=( $objeto->cupo -1);                
                 
-                self::guardarJSON($listaMaterias, PATH_ARCHIVOS ."/Materia.txt", "Materia");
-                self::guardarJSON($listaInscripciones, PATH_ARCHIVOS ."/Inscripciones.txt", "Inscripciones");
+                self::guardarJSON($listaMaterias, PATH_ARCHIVOS ."/Materia.txt");
+                self::guardarJSON($listaInscripciones, PATH_ARCHIVOS ."/Inscripciones.txt");
             }
         }
     }
@@ -114,7 +118,7 @@ class Facultad {
     //PUNTO 5y6    
     static public function inscripciones($apellido,$materia)
     {
-        $lista = self::LeerJSON(PATH_ARCHIVOS ."/Inscripciones.txt", "Inscripciones");        
+        $lista = Inscripciones::leerFromJSON(PATH_ARCHIVOS ."/Inscripciones.txt");
         if($apellido==null && $materia==null)
         {
             echo "<br> Muestro Listado de Inscripciones sin filtrar<br>";
@@ -143,9 +147,8 @@ class Facultad {
     //PUNTO - 7
     static public function modificarAlumno( $nombre, $apellido, $email,  $foto)
     {
-        //echo "<br>Entro en modificarAlumno con datos: $nombre, $apellido, $email </br>";
-        $lista = self::LeerJSON(PATH_ARCHIVOS ."/Alumno.txt", "Alumno");        
-        //$Alumno=self::ExisteAlumno($lista, $email); //no la uso mas... tengo la de abajo que es generica
+        //echo "<br>Entro en modificarAlumno con datos: $nombre, $apellido, $email </br>";        
+        $lista = Alumno::leerFromJSON(PATH_ARCHIVOS ."/Alumno.txt");
         $Alumno=self::BuscaXCriterio($lista, "email", $email);
         
         if($Alumno==null)
@@ -173,55 +176,46 @@ class Facultad {
     //PUNTO - 8
     static public function alumnos()
     {
-        //echo "<br>Entro en consultarAlumno con datos:  $apellido </br>";
-        $lista = self::LeerJSON(PATH_ARCHIVOS ."/Alumno.txt", "Alumno");        
-        
-        if($lista==null)
-        {
-            echo "<br>No existen alumnos a mostrar<br>";
-        }
-        else
-        {      
-            echo "<br> Muestro Listado de Alumnos<br>";
-            echo (self::crearTablaHeader($lista) );
-            /*
-            foreach ($listaFiltrada as $objeto)
-            {
-                //$objeto->Mostrar();
-                echo $objeto;
-            } 
-            */           
-        }
+        $listaHead = Alumno::getPublicProperties();
+        echo self::crearTablaHeader($listaHead);
+        $lista = Alumno::leerFromJSON(PATH_ARCHIVOS ."/Alumno.txt");        
+        echo self::crearTablaBody($lista,"Alumno");
     }
     
+
     //**********  OTRAS FUNCIONES ***********/
 
-
-    public static function crearTablaHeader($lista)
+    /**Devuelve Tabla con Head cargados en base a un array con los nombres de los Head */
+    public static function crearTablaHeader($listaHead)
     {
         $strHtml="<table border='1'>";
-        $strCabeceras = reset($lista);
+        $strHtml.="<thead>";
         
-        $campos=$lista[0];
-        self::debugAlgo($campos);
-      
-        /*
-        foreach ($campos as $key => $value) {
-            self::debugAlgo($key);
-          //  self::debugAlgo($value);
-            
+        foreach($listaHead as $header){
+            $strHtml.="<th>".$header."</th>";     
         }
-        */
-        //    $strHtml.="<th>".$objeto[0]."</th>";            
-        
-/*
-        $strHtml.="<th>ALIAS</th>";
-        $strHtml.="<th>TIPO</th>";
-        $strHtml.="<th>EDAD</th>";
-        $strHtml.="<th>EMAIL</th>";
-        $strHtml.="<th>FOTO</th>";
+        $strHtml.= "</thead>";
+        return $strHtml;        
+    }
+
+    /** Devuelve Cuerpo de la Tabla en base a un listado
+     * Recibe Listado de 
+     */
+    public static function crearTablaBody($lista,$tipo)
+    {
         $strHtml.="<tbody>";
-  */      
+        //$listaHead = Alumno::getPublicProperties();
+
+        $listaHead = $tipo::getPublicProperties();
+        foreach($lista as $objeto){
+            $strHtml.= "<tr>";
+            foreach ($listaHead as $propertyName) {
+                $strHtml.="<td>".$objeto->{$propertyName}."</td>";     
+            }
+            $strHtml.= "</tr>";
+        }
+        
+        $strHtml.= "</tbody>";
         return $strHtml;        
     }
 
@@ -283,75 +277,15 @@ class Facultad {
 
 
 //************ ARCHIVOS ********** */
-    public static function LeerJSON($nombreArchivo, $tipo)
-    {
-        $ruta = $nombreArchivo;
-
-        if (file_exists($ruta)) {
-
-            $archivo = fopen($ruta, "r");
-            $listado = array();
-            while (!feof($archivo)) {
-                $renglon = fgets($archivo);
-                if ($renglon != "") 
-                {
-                    $objeto = json_decode($renglon);                            
-                    switch ($tipo) 
-                    {                        
-                        case 'Materia':                           
-                            $Materia = new Materia($objeto->nombre ,$objeto->codigo, $objeto->cupo , $objeto->aula);
-                            array_push($listado, $Materia);             
-                            break;                        
-                        case 'Alumno':
-                            //$Alumno = new Alumno($objeto->get("nombre") ,$objeto->get("apellido") , $objeto->get("email") ,$objeto->get("nomFoto") );
-                            $Alumno = new Alumno($objeto->nombre ,$objeto->apellido, $objeto->email , $objeto->nomFoto);
-                            array_push($listado, $Alumno);             
-                            break;
-                        case 'Inscripciones':
-                            $Inscrpcion=new Inscripciones($objeto->nombre ,$objeto->apellido, $objeto->email,$objeto->codigo,$objeto->materia);
-                            //self::debugAlgo($Inscrpcion);
-                            array_push($listado, $Inscrpcion);             
-                            break;
-                    }
-                }
-            }
-            fclose($archivo);
-            if (count($listado) > 0) {
-                
-                return $listado;
-            }
-        }
-        return null;
-    }
-
-
     
-    public static function guardarJSON($listado, $nombreArchivo, $tipo) 
+    public static function guardarJSON($listado, $nombreArchivo) 
     {
         $archivo = fopen($nombreArchivo, "w");
-
-        foreach($listado as $objeto) 
-        {
-            switch ($tipo) 
-            {             
-                case 'Materia':                
-                    $array = array('nombre' => $objeto->nombre, 'codigo' => $objeto->codigo,'cupo' => $objeto->cupo,'aula' => $objeto->aula );                
-                    array_push($listado, $array);
-                    fputs($archivo,  json_encode($array) . PHP_EOL);                
-                    break;
-                case 'Alumno':                        
-                        //$array = array('nombre' => $key->get("nombre"), 'apellido' => $key->get("apellido"),'email' => $key->get("email"),'nomFoto' => $key->get("nomFoto") );                        
-                        $array = array('nombre' => $objeto->nombre, 'apellido' => $objeto->apellido,'email' => $objeto->email,'nomFoto' => $objeto->nomFoto );
-                        array_push($listado, $array);
-                        fputs($archivo,  json_encode($array) . PHP_EOL);                    
-                    break;
-                case 'Inscripciones':
-                        $array = array('nombre' => $objeto->nombre, 'apellido' => $objeto->apellido,'email' => $objeto->email,'codigo' => $objeto->codigo,'materia' => $objeto->materia );
-                        array_push($listado, $array);
-                        fputs($archivo,  json_encode($array) . PHP_EOL);
-                    break;
-            }
+        $array = array();
+        foreach($listado as $objeto){
+            array_push($array,$objeto->jsonSerialize());
         }
+        fputs($archivo,  json_encode($array) . PHP_EOL);                    
 
         fclose($archivo);
         return $listado;

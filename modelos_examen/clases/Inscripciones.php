@@ -46,5 +46,44 @@ class Inscripciones {
     {
         return "nombre: $this->nombre || apellido: $this->apellido || email: $this->email || codigo: $this->codigo || materia: $this->materia </br>";
     }
+
+
+    /** Devuelve array con nombres de las propiedades de la clase (para los headers de la tabla) */
+    public static function getPublicProperties(){
+        return array('nombre','apellido','email','codigo','materia');
+    }
+
+    /** seria un tojson*/
+    public function jsonSerialize()
+    {
+        return 
+        [
+            'nombre'   => $this->nombre,
+            'apellido' => $this->apellido,
+            'email' => $this->email,
+            'codigo' => $this->codigo,
+            'materia' => $this->materia
+        ];
+    }
+
+    /** Lee archivo (array de json de objeto)
+     * 
+     * $path = Ubicacion del archivo
+     *  Retorna un listado de json de objetos de la clase
+     */
+    public static function leerFromJSON($path)
+    {
+        $retorno = array();
+        $json = file_get_contents($path);
+        $json_data = json_decode($json,true);
+        //var_dump($json_data);
+        foreach ($json_data as $key => $value) 
+        {
+            array_push($retorno,new Inscripciones($json_data[$key]['nombre'],$json_data[$key]['apellido'],$json_data[$key]['email'],$json_data[$key]['materia'],$json_data[$key]['materia']));          
+        }
+        return $retorno;
+    }
+
+    
 }
 ?>

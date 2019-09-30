@@ -58,17 +58,6 @@
 
                     echo '<br>(index) Cargar Alumno (con foto)<br>';
                     require_once 'manejadores/CargaAlumno.php';
-
-                    //Esto si pide Carga Alumno con o sin foto
-                    // if (isset($_FILES["foto"])) 
-                    // {
-                    //     echo '<br>(index) Cargar Alumno (con foto)<br>';
-                    //     require_once 'manejadores/CargaAlumno.php';
-                    // }
-                    // else
-                    // {
-                    //     echo '<br>(index) Cargar Alumno (Sin foto)<br>';
-                    // }
                     break;
                 case 'cargarMateria':
                     echo '<br>(index) cargarMateria<br>';
