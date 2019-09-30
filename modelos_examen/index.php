@@ -12,12 +12,8 @@
 <body>
     
     <?php
-    // require_once './clases/Alumno.php';
     require_once './clases/Facultad.php';
-    // require_once './clases/Materia.php';
-
     #require_once './clases/Generales.php';
-//    $PATH_ARCHIVOS = './archivos';
 
    define("PATH_ARCHIVOS", "./archivos"); 
 
@@ -49,7 +45,7 @@
                     break;
                 case 'alumnos':
                     echo '<br>(index) alumnos <br>';              
-                
+                    require_once 'manejadores/alumnos.php';
                     break;
                 
              }

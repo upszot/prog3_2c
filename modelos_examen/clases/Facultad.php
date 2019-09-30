@@ -143,7 +143,7 @@ class Facultad {
     //PUNTO - 7
     static public function modificarAlumno( $nombre, $apellido, $email,  $foto)
     {
-        echo "<br>Entro en modificarAlumno con datos: $nombre, $apellido, $email </br>";
+        //echo "<br>Entro en modificarAlumno con datos: $nombre, $apellido, $email </br>";
         $lista = self::LeerJSON(PATH_ARCHIVOS ."/Alumno.txt", "Alumno");        
         //$Alumno=self::ExisteAlumno($lista, $email); //no la uso mas... tengo la de abajo que es generica
         $Alumno=self::BuscaXCriterio($lista, "email", $email);
@@ -154,7 +154,7 @@ class Facultad {
         }
         else
         {      
-            echo "<br>Modifica Alumno<br>";             
+            //echo "<br>Modifica Alumno<br>";             
             $nomFoto = "SIN_FOTO"; 
             if ($foto != null) {                
                 $nomFoto="foto_".$email;
@@ -170,7 +170,60 @@ class Facultad {
         }
     }
 
+    //PUNTO - 8
+    static public function alumnos()
+    {
+        //echo "<br>Entro en consultarAlumno con datos:  $apellido </br>";
+        $lista = self::LeerJSON(PATH_ARCHIVOS ."/Alumno.txt", "Alumno");        
+        
+        if($lista==null)
+        {
+            echo "<br>No existen alumnos a mostrar<br>";
+        }
+        else
+        {      
+            echo "<br> Muestro Listado de Alumnos<br>";
+            echo (self::crearTablaHeader($lista) );
+            /*
+            foreach ($listaFiltrada as $objeto)
+            {
+                //$objeto->Mostrar();
+                echo $objeto;
+            } 
+            */           
+        }
+    }
+    
     //**********  OTRAS FUNCIONES ***********/
+
+
+    public static function crearTablaHeader($lista)
+    {
+        $strHtml="<table border='1'>";
+        $strCabeceras = reset($lista);
+        
+        $campos=$lista[0];
+        self::debugAlgo($campos);
+      
+        /*
+        foreach ($campos as $key => $value) {
+            self::debugAlgo($key);
+          //  self::debugAlgo($value);
+            
+        }
+        */
+        //    $strHtml.="<th>".$objeto[0]."</th>";            
+        
+/*
+        $strHtml.="<th>ALIAS</th>";
+        $strHtml.="<th>TIPO</th>";
+        $strHtml.="<th>EDAD</th>";
+        $strHtml.="<th>EMAIL</th>";
+        $strHtml.="<th>FOTO</th>";
+        $strHtml.="<tbody>";
+  */      
+        return $strHtml;        
+    }
 
     /**Funcion de Busqueda Generica en listado
      * Usa los metodos magicos __get para buscar por atributo del objeto
@@ -228,19 +281,6 @@ class Facultad {
         return $retorno;
     }
 
-    public static function existeAlumno($lista, $email)
-    {
-        $retorno=null;
-        foreach ($lista as $objeto) {
-            // if ( $objeto->getapellido() == $apellido)
-            if ( $objeto->email == $email) 
-            {          
-                $retorno= $objeto;
-                break;
-            }
-        }
-        return $retorno;
-    }
 
 //************ ARCHIVOS ********** */
     public static function LeerJSON($nombreArchivo, $tipo)
