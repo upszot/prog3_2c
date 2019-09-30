@@ -28,11 +28,12 @@ class Materia {
         if(property_exists($this, $property)) {
             return $this->$property;
         }
-    }
+    }   
 
-    public function __set($propiedad, $valor)
-    {
-        $this->propiedad = $valor;
+    public function __set($property, $value){
+        if(property_exists($this, $property)) {
+            $this->$property = $value;
+        }
     }
 
     //---- Funciones ---

@@ -31,9 +31,12 @@ class Alumno {
         }
     }
 
-    public function __set($propiedad, $valor){
-        $this->propiedad = $valor;
+    public function __set($property, $value){
+        if(property_exists($this, $property)) {
+            $this->$property = $value;
+        }
     }
+
 
 
     // ----------------------------------------------- 

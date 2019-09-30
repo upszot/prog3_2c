@@ -12,9 +12,9 @@
 <body>
     
     <?php
-    require_once './clases/Alumno.php';
+    // require_once './clases/Alumno.php';
     require_once './clases/Facultad.php';
-    require_once './clases/Materia.php';
+    // require_once './clases/Materia.php';
 
     #require_once './clases/Generales.php';
 //    $PATH_ARCHIVOS = './archivos';
@@ -38,10 +38,12 @@
                     break;
                 case 'inscribirAlumno':
                 echo '<br>(index) inscribirAlumno<br>';
+                    require_once 'manejadores/inscribirAlumno.php';
                     break;
                 
                 case 'inscripciones':
                     echo '<br>(index) inscripciones <br>';
+                    require_once 'manejadores/inscripciones.php';
                     //con filtro y sin filtro
                     
                     break;
@@ -79,7 +81,7 @@
 
                 case 'modificarAlumno':
                     echo '<br>(index) modificarAlumno<br>';
-                
+                    require_once 'manejadores/modificarAlumno.php';
                     break;
             }// FIN switch (key($_POST))             
             break;

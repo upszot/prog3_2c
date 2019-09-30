@@ -2,6 +2,7 @@
 <?php
     require_once './clases/Alumno.php';
     require_once './clases/Materia.php';
+    require_once './clases/Inscripciones.php';
     require_once './clases/upload.php';
 
 class Facultad {
@@ -59,10 +60,8 @@ class Facultad {
     //PUNTO - 3
     static public function cargarMateria( $nombre, $codigo, $cupo,  $aula)
     {
-        echo "<br>Entro en cargarMateria con datos:  $nombre, $codigo, $cupo, $aula </br>";
-        $lista = self::LeerJSON(PATH_ARCHIVOS ."/Materia.txt", "Materia");  
-        self::debugAlgo($lista);      
-
+        //echo "<br>Entro en cargarMateria con datos:  $nombre, $codigo, $cupo, $aula </br>";
+        $lista = self::LeerJSON(PATH_ARCHIVOS ."/Materia.txt", "Materia");          
         $objeto=self::BuscaXCriterio($lista, "codigo", $codigo);
         
         if($objeto!=null)
@@ -71,15 +70,79 @@ class Facultad {
         }
         else
         {      
-            echo "<br>Nueva Materia<br>";
-
+            //echo "<br>Nueva Materia<br>";
             $Materia=new Materia($nombre, $codigo, $cupo, $aula);
             array_push($lista, $Materia);
             self::guardarJSON($lista, PATH_ARCHIVOS ."/Materia.txt", "Materia");
         }
     }
     
+    //PUNTO - 4
+    static public function inscribirAlumno($nombre,$apellido,$email,$materia,$codigo)
+    {
+        //echo "<br>Entro en inscribirAlumno con datos:  $nombre,$apellido,$email,$materia,$codigo </br>";
+        $listaMaterias = self::LeerJSON(PATH_ARCHIVOS ."/Materia.txt", "Materia");
+        $objeto=self::BuscaXCriterio($listaMaterias, "codigo", $codigo);
+        
+        if($objeto==null)
+        {
+            echo "<br>La Materia NO existe<br>";
+        }
+        else
+        {
+            if($objeto->cupo <= 0)
+            {
+                echo "<br>No hay Cupo en $objeto->nombre <br>";
+            }
+            else
+            {
+                //echo "<br>Nueva Inscripcion <br>";
+                $listaInscripciones = self::LeerJSON(PATH_ARCHIVOS ."/Inscripciones.txt", "Inscripciones");
+                //No valido datos: por ejemplo $objeto->nombre == $materia ... (no lo pidieron...)
+                $Inscrpcion=new Inscripciones($nombre,$apellido,$email,$codigo,$materia);
+                array_push($listaInscripciones, $Inscrpcion);
 
+                //Resto en 1 el cupo, con __set (metodo magico)= __get (metodo magico) -1
+                 $objeto->cupo=( $objeto->cupo -1);                
+                
+                self::guardarJSON($listaMaterias, PATH_ARCHIVOS ."/Materia.txt", "Materia");
+                self::guardarJSON($listaInscripciones, PATH_ARCHIVOS ."/Inscripciones.txt", "Inscripciones");
+            }
+        }
+    }
+
+    //PUNTO 5y6    
+    static public function inscripciones($apellido,$materia)
+    {
+        $lista = self::LeerJSON(PATH_ARCHIVOS ."/Inscripciones.txt", "Inscripciones");        
+        if($apellido==null && $materia==null)
+        {
+            echo "<br> Muestro Listado de Inscripciones sin filtrar<br>";
+            $listaMostrar=$lista;
+        }
+        else
+        {
+            if($apellido!=null)
+            {
+                echo "<br> Muestro Listado de Inscripciones Filtrada por Apellido<br>";
+                $listaMostrar=self::SubListaXCriterio($lista, "apellido", $apellido,FALSE);
+            }
+            else
+            {
+                echo "<br> Muestro Listado de Inscripciones Filtrada por Materia<br>";
+                $listaMostrar=self::SubListaXCriterio($lista, "materia", $materia,FALSE);
+            }
+            
+        }
+        
+        foreach ($listaMostrar as $objeto)
+        {
+            echo $objeto;
+        }               
+    }
+    
+
+    
     //**********  OTRAS FUNCIONES ***********/
 
     /**Funcion de Busqueda Generica en listado
@@ -176,7 +239,12 @@ class Facultad {
                             //$Alumno = new Alumno($objeto->get("nombre") ,$objeto->get("apellido") , $objeto->get("email") ,$objeto->get("nomFoto") );
                             $Alumno = new Alumno($objeto->nombre ,$objeto->apellido, $objeto->email , $objeto->nomFoto);
                             array_push($listado, $Alumno);             
-                            break;                            
+                            break;
+                        case 'Inscripciones':
+                            $Inscrpcion=new Inscripciones($objeto->nombre ,$objeto->apellido, $objeto->email,$objeto->codigo,$objeto->materia);
+                            //self::debugAlgo($Inscrpcion);
+                            array_push($listado, $Inscrpcion);             
+                            break;
                     }
                 }
             }
@@ -209,7 +277,12 @@ class Facultad {
                         $array = array('nombre' => $objeto->nombre, 'apellido' => $objeto->apellido,'email' => $objeto->email,'nomFoto' => $objeto->nomFoto );
                         array_push($listado, $array);
                         fputs($archivo,  json_encode($array) . PHP_EOL);                    
-                    break;                    
+                    break;
+                case 'Inscripciones':
+                        $array = array('nombre' => $objeto->nombre, 'apellido' => $objeto->apellido,'email' => $objeto->email,'codigo' => $objeto->codigo,'materia' => $objeto->materia );
+                        array_push($listado, $array);
+                        fputs($archivo,  json_encode($array) . PHP_EOL);
+                    break;
             }
         }
 

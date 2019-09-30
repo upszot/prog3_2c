@@ -1,0 +1,3 @@
+{"nombre":"pepe","apellido":"perez","email":"pepe@lala.com","codigo":"002","materia":"prog4"}
+{"nombre":"manuel","apellido":"martinez","email":"mmartinez@lala.com","codigo":"002","materia":"prog4"}
+{"nombre":"manuel","apellido":"martinez","email":"mmartinez@lala.com","codigo":"001","materia":"prog3"}
