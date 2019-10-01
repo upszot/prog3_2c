@@ -47,7 +47,7 @@ class Usuario {
     //------------ Funciones ---------------
     public function __toString()
     {        
-        return "legajo: $this->legajo  || email: $this->email ||nombre: $this->nombre || clave: $this->clave  </br>";
+        return "legajo: $this->legajo  || email: $this->email ||nombre: $this->nombre   </br>";
     }
 
 

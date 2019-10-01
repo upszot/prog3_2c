@@ -41,27 +41,16 @@
                         echo '<br>(index) verUsuarios<br>';
                         require_once 'manejadores/verUsuarios.php';
                         break;                      
-                    
-                    
-                case 'consultarAlumno':
-                    echo '<br>(index) consultarAlumno<br>';
-                    require_once 'manejadores/consultarAlumno.php';
-                    break;
-                case 'inscribirAlumno':
-                echo '<br>(index) inscribirAlumno<br>';
-                    require_once 'manejadores/inscribirAlumno.php';
-                    break;
-                
-                case 'inscripciones':
-                    echo '<br>(index) inscripciones <br>';
-                    require_once 'manejadores/inscripciones.php';
-                    //con filtro y sin filtro
-                    
-                    break;
-                case 'alumnos':
-                    echo '<br>(index) alumnos <br>';              
-                    require_once 'manejadores/alumnos.php';
-                    break;
+                case 'verUsuario':
+                    //PARCIAL
+                    echo '<br>(index) verUsuario<br>';
+                    require_once 'manejadores/verUsuario.php';
+                    break;                      
+                case 'logs':
+                    //PARCIAL
+                    echo '<br>(index) logs<br>';
+                    require_once 'manejadores/logs.php';
+                    break;                                               
                 
              }
              $caso=key($_GET);
@@ -71,17 +60,11 @@
         case "POST":
             switch (key($_POST)) 
             {
-               
                 case 'cargarUsuario':
                 //PARCIAL
                     // echo '<br>(index) Cargar Usuario (con foto)<br>';
                     require_once 'manejadores/cargarUsuario.php';
                     break;
-                case 'cargarMateria':
-                    echo '<br>(index) cargarMateria<br>';
-                    require_once 'manejadores/cargarMateria.php';
-                    break;
-
                 case 'modificarUsuario':
                     //PARCIAL
                     //echo '<br>(index) modificarUsuario<br>';

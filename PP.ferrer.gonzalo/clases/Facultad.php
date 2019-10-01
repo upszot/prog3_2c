@@ -1,11 +1,7 @@
 
 <?php
-    //require_once './clases/Alumno.php';    
-    require_once './clases/Materia.php';
-    require_once './clases/Inscripciones.php';
-    require_once './clases/upload.php';
-    
 
+    require_once './clases/upload.php';
     require_once './clases/Usuario.php';
     require_once './clases/Log.php';
 
@@ -119,157 +115,50 @@ class Facultad {
     //PUNTO - 5 PARCIAL
     static public function verUsuarios()
     {
-        echo "<br>Entro en verUsuarios: </br>";    
-        $lista = Usuario::leerFromJSON(PATH_ARCHIVOS ."/Usuario.txt");         
-    }
-
-
-
-    //****************--------------------------- */
-    //PUNTO - 3 
-    static public function cargarMateria( $nombre, $codigo, $cupo,  $aula)
-    {
-        //echo "<br>Entro en cargarMateria con datos:  $nombre, $codigo, $cupo, $aula </br>";        
-        $lista = Materia::leerFromJSON(PATH_ARCHIVOS ."/Materia.txt");
-
-        $objeto=self::BuscaXCriterio($lista, "codigo", $codigo);
+        //echo "<br>Entro en verUsuarios: </br>";    
+        $lista = Usuario::leerFromJSON(PATH_ARCHIVOS ."/Usuario.txt");   
         
-        if($objeto!=null)
-        {
-            echo "<br>La Materia ya existe<br>";
-        }
-        else
-        {      
-            //echo "<br>Nueva Materia<br>";
-            $Materia=new Materia($nombre, $codigo, $cupo, $aula);
-            array_push($lista, $Materia);
-            self::guardarJSON($lista, PATH_ARCHIVOS ."/Materia.txt");
-        }
-    }
-    
-    //PUNTO - 4
-    static public function inscribirAlumno($nombre,$apellido,$email,$materia,$codigo)
-    {
-        echo "<br>Entro en inscribirAlumno con datos:  $nombre,$apellido,$email,$materia,$codigo </br>";        
-        $listaMaterias = Materia::leerFromJSON(PATH_ARCHIVOS ."/Materia.txt");
-        $objeto=self::BuscaXCriterio($listaMaterias, "codigo", $codigo);
-        
-        if($objeto==null)
-        {
-            echo "<br>La Materia NO existe<br>";
-        }
-        else
-        {
-            if($objeto->cupo <= 0)
-            {
-                echo "<br>No hay Cupo en $objeto->nombre <br>";
-            }
-            else
-            {
-                //echo "<br>Nueva Inscripcion <br>";
-                $listaInscripciones = Inscripciones::leerFromJSON(PATH_ARCHIVOS ."/Inscripciones.txt");
-                //$listaInscripciones = self::LeerJSON(PATH_ARCHIVOS ."/Inscripciones.txt", "Inscripciones");
-
-                //No valido datos: por ejemplo $objeto->nombre == $materia ... (no lo pidieron...)
-                $Inscrpcion=new Inscripciones($nombre,$apellido,$email,$codigo,$materia);
-                array_push($listaInscripciones, $Inscrpcion);
-
-                //Resto en 1 el cupo, con __set (metodo magico)= __get (metodo magico) -1
-                 $objeto->cupo=( $objeto->cupo -1);                
-                
-                self::guardarJSON($listaMaterias, PATH_ARCHIVOS ."/Materia.txt");
-                self::guardarJSON($listaInscripciones, PATH_ARCHIVOS ."/Inscripciones.txt");
-            }
-        }
-    }
-
-    //PUNTO 5y6    
-    static public function inscripciones($apellido,$materia)
-    {
-        $lista = Inscripciones::leerFromJSON(PATH_ARCHIVOS ."/Inscripciones.txt");
-        if($apellido==null && $materia==null)
-        {
-            echo "<br> Muestro Listado de Inscripciones sin filtrar<br>";
-            $listaMostrar=$lista;
-        }
-        else
-        {
-            if($apellido!=null)
-            {
-                echo "<br> Muestro Listado de Inscripciones Filtrada por Apellido<br>";
-                $listaMostrar=self::SubListaXCriterio($lista, "apellido", $apellido,FALSE);
-            }
-            else
-            {
-                echo "<br> Muestro Listado de Inscripciones Filtrada por Materia<br>";
-                $listaMostrar=self::SubListaXCriterio($lista, "materia", $materia,FALSE);
-            }            
-        }
-        
-        foreach ($listaMostrar as $objeto)
-        {
+        foreach($lista as $objeto)
+        {            
             echo $objeto;
-        }               
-    }
-    
-
-    //PUNTO - 8
-    static public function alumnos()
-    {
-        $listaHead = Alumno::getPublicProperties();
-        echo self::crearTablaHeader($listaHead);
-        $lista = Alumno::leerFromJSON(PATH_ARCHIVOS ."/Alumno.txt");        
-        echo self::crearTablaBody($lista,"Alumno");
-    }
-    
-
-    //**********  OTRAS FUNCIONES ***********/
-
-    /**Devuelve Tabla con Head cargados en base a un array con los nombres de los Head */
-    public static function crearTablaHeader($listaHead)
-    {
-        $strHtml="<table border='1'>";
-        $strHtml.="<thead>";
-        
-        foreach($listaHead as $header){
-            $strHtml.="<th>".$header."</th>";     
         }
-        $strHtml.= "</thead>";
-        return $strHtml;        
+    }
+    
+    //PUNTO - 6 PARCIAL
+    static public function verUsuario($legajo)
+    {
+        //echo "<br>Entro en verUsuario: </br>";    
+        $lista = Usuario::leerFromJSON(PATH_ARCHIVOS ."/Usuario.txt");   
+        $listaFiltrada=self::SubListaXCriterio($lista, "legajo", $legajo,FALSE); 
+
+        foreach($listaFiltrada as $objeto)
+        {            
+            echo $objeto;
+        }
     }
 
-    /** Devuelve Cuerpo de la Tabla en base a un listado
-     * Recibe Listado de 
-     */
-    public static function crearTablaBody($lista,$tipo)
+    //PUNTO -7 PARCIAL
+    static public function logs($fecha )
     {
-        $strHtml.="<tbody>";
-        //$listaHead = Alumno::getPublicProperties();
+        $lista = Log::leerFromJSON(PATH_ARCHIVOS ."/Log.txt");
+        echo "<br>Entro log con datos: $fecha </br>";
+        
+        foreach($lista as $objeto)
+        {//campo con formato 20190930_080941
 
-        $listaHead = $tipo::getPublicProperties();
-        foreach($lista as $objeto){
-            $strHtml.= "<tr>";
-            foreach ($listaHead as $propertyName) {
-                if($propertyName=='nomFoto')
-                {//OJO esto adaptarlo segun el nombre del campo donde se guarda el nombre de las imagenes
+            $dia=explode('_', $objeto->hora);
+            //self::debugAlgo($dia[0]);
 
-                    if($objeto->{$propertyName}!="SIN_FOTO")
-                    {
-                        $img="./fotos".$tipo."/".$objeto->{$propertyName}.".png";
-                        $strHtml.= "<td><img src=" . $img . " alt=" . " border=3 height=30% width=30%></img></td>";                        
-                    }
-
-                }else
-                {
-                    $strHtml.="<td>".$objeto->{$propertyName}."</td>";
-                }
+            if ($dia[0]>$fecha)
+            {
+                echo $objeto;
             }
-            $strHtml.= "</tr>";
         }
         
-        $strHtml.= "</tbody>";
-        return $strHtml;        
     }
+
+
+
 
 
     /**Funcion de Busqueda Generica en listado
