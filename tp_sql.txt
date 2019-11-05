@@ -1,0 +1,36 @@
+prompt *** Create tables ***
+
+create TABLE Provedores (
+	numero int NOT NULL AUTO_INCREMENT,
+    	Nombre varchar(30) ,
+    	Domicilio varchar(50) ,
+    	Localidad varchar(50) ,
+    	PRIMARY KEY (id)
+    )
+/
+
+create TABLE Productos (
+	id int NOT NULL AUTO_INCREMENT,
+	pNombre varchar(30) ,
+    	Precio float(50) ,
+    	Tamanio varchar(20) ,
+    	PRIMARY KEY (id)
+    )
+
+create TABLE Envios (
+	Numero int NOT NULL AUTO_INCREMENT,
+	pNumero int NOT NULL ,
+	Cantidad int NOT NULL ,
+    	PRIMARY KEY (Numero,pNumero)
+    )
+/
+
+
+prompt *** punto 2 ***
+
+insert into Provedores values(NULL, 'Perez', 'Peron 876' , 'quilmes'), 
+			values (NULL, 'Gimenez', 'mitre 750', 'Avellaneda'),
+			values (NULL, 'Aguirre', 'Boedo 634', 'Bernal')
+/
+
+
